@@ -1,5 +1,6 @@
 package Project;
 
+import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
 import lejos.robotics.subsumption.Behavior;
 
@@ -12,6 +13,7 @@ public class MoveForward implements Behavior{
 
 	@Override
 	public void action() {
+		LCD.clear();
 		System.out.println("en avant ! ");
 		Motor.B.forward();
 		Motor.C.forward();

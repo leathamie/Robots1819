@@ -33,7 +33,6 @@ public class SwitchOff implements Behavior{
 	
 
 	public void action(){
-
 		LCD.clear();
 		LCD.drawString("EndProcess", 1, 0);
 		LCD.refresh();
