@@ -1,0 +1,64 @@
+package Project;
+
+import lejos.hardware.lcd.LCD;
+import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.robotics.SampleProvider;
+import lejos.robotics.subsumption.Behavior;
+
+public class DetectColors implements Behavior {
+	EV3ColorSensor cs;
+	Color actualColor;
+	Colors colors;
+	int crossedColors;
+	SampleProvider sample;
+	float[] foundColors = new float[3]; 
+	
+	
+	public DetectColors(EV3ColorSensor colorSensor, Colors c, SampleProvider s){
+		this.actualColor = null;
+		this.crossedColors = 0;
+		this.cs = colorSensor;
+		this.colors = c;
+		this.sample = s;
+		this.sample = this.cs.getRGBMode();
+	}
+	
+	@Override
+	public boolean takeControl() {
+		if(this.colors.isInitColors()) {
+			this.sample.fetchSample(this.foundColors, 0);
+			if (this.actualColor == null) {
+				this.actualColor = new Color(this.foundColors); 
+				return false;
+			}else {
+				if (this.actualColor.quickEquals(this.foundColors)) {
+					return false;
+				}else {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void action() {
+		LCD.clear();
+		this.actualColor.setRgb(this.foundColors);	
+		this.colors.setColorName(actualColor);
+		if(this.actualColor.isBorder()) {
+			this.crossedColors += 1;
+		}
+		LCD.drawString("New Color !" + this.actualColor.getName(), 0, 1 );
+	}
+
+	@Override
+	public void suppress() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+		
+
+}

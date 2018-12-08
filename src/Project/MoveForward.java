@@ -1,11 +1,9 @@
 package Project;
 
-import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
 import lejos.robotics.subsumption.Behavior;
 
 public class MoveForward implements Behavior{
-	// test
 	@Override
 	public boolean takeControl() {
 		return true;
@@ -13,8 +11,8 @@ public class MoveForward implements Behavior{
 
 	@Override
 	public void action() {
-		LCD.clear();
-		System.out.println("en avant ! ");
+		//LCD.clear();
+		//System.out.println("en avant ! ");
 		Motor.B.forward();
 		Motor.C.forward();
 	}
@@ -25,4 +23,7 @@ public class MoveForward implements Behavior{
 		Motor.C.stop(true);
 	}
 
+	public void countCrossedColors() {
+		
+	}
 }

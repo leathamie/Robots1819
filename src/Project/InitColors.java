@@ -9,18 +9,19 @@ import lejos.robotics.subsumption.Behavior;
 public class InitColors implements Behavior{
 
 	EV3ColorSensor cs;
+	Colors colors;
 	
-	//constructeur
-	public InitColors(EV3ColorSensor colorSensor) {
+	//Constructor
+	public InitColors(EV3ColorSensor colorSensor, Colors c){
 		this.cs = colorSensor;
+		this.colors = c;
 	}
 
 
 
 	@Override
 	public boolean takeControl() {
-		// TODO Auto-generated method stub
-		return Main.initColors;
+		return !this.colors.isInitColors();
 	}
 
 	@Override
@@ -37,24 +38,21 @@ public class InitColors implements Behavior{
 			echantillon.fetchSample(vals, 0);
 			
 			LCD.clear();
-			LCD.drawString(vals[0]+" ; " + vals[1]+" ; "+vals[2], 0, 3);
+			LCD.drawString("RGB found : " + vals[0] + " ; " + vals[1] + " ; " + vals[2], 0, 3);
 			Button.ENTER.waitForPressAndRelease();
+			LCD.clear();
+			
+			//Color c = new Color(vals, Parameters.COLORS[i]);
+			Color c = new Color(vals);
+			c.setName(Parameters.COLORS[i]);
+			this.colors.setColor(i,c);
+			
 			
 			LCD.clear();
-			float v1 = vals[0]*1000;
-			int v1i = (int)v1;
-			LCD.drawString("avant" + v1 + "apres" + v1i , 0, 3 );
-			LCD.drawString("apres" + v1i , 0, 4 );
-			Button.ENTER.waitForPressAndRelease();
-			Main.colors[i][0] = (int)vals[0]*1000;
-			Main.colors[i][1] = (int)vals[1]*1000;
-			Main.colors[i][2] = (int)vals[2]*1000;
-			LCD.clear();
-			LCD.drawString(Main.colors[i][0] + " ; " + Main.colors[i][1] + " ; " + Main.colors[i][2], 0, 3 );
+			LCD.drawString(c.toString(), 0, 3 );
 			Button.ENTER.waitForPressAndRelease();
 		}
-		Main.initColors = false;
-		
+		this.colors.setInitColors();		
 		
 		
 	}
@@ -62,6 +60,10 @@ public class InitColors implements Behavior{
 	@Override
 	public void suppress() {
 		// TODO Auto-generated method stub
+		LCD.clear();
+		LCD.drawString("Ready ? Press 'center'", 0, 0);
+		
+		
 		
 	}
 	
