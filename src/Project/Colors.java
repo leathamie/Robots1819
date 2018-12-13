@@ -42,6 +42,7 @@ public class Colors {
 
 	public boolean setColorName(Color c) {
 		boolean set = false;
+		c.setName("UndefinedColor");
 		for (int i = 0 ; i<this.colors.length ; i++) {
 			if (colors[i].equals(c)) {
 				c.setName(colors[i].getName());

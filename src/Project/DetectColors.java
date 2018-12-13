@@ -44,9 +44,9 @@ public class DetectColors implements Behavior {
 	@Override
 	public void action() {
 		LCD.clear();
-		this.actualColor.setRgb(this.foundColors);	
-		this.colors.setColorName(actualColor);
-		if(this.actualColor.isBorder()) {
+		LCD.drawString("I'm in!" + this.actualColor.getName(), 0, 1 );
+		this.actualColor.setRgb(this.foundColors);
+		if (this.actualColor.equals(colors.getColor(Parameters.BORDERCOLOR))) {
 			this.crossedColors += 1;
 		}
 		LCD.drawString("New Color !" + this.actualColor.getName(), 0, 1 );

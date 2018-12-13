@@ -2,7 +2,7 @@ package Project;
 
 public class Color {
 	private float[] rgb = new float[3];
-	private String name;
+	private String name = null;
 	
 	
 	public Color() {
@@ -22,14 +22,10 @@ public class Color {
 	}
 	*/
 	public Color(float[] c) {
-		/*
-		 * this.rgb[0] = c[0]*1000;
+		this.rgb[0] = c[0]*1000;
 		this.rgb[1] = c[1]*1000;
 		this.rgb[2] = c[2]*1000;
-		 */
-		this.rgb[0] = c[0];
-		this.rgb[1] = c[1];
-		this.rgb[2] = c[2];
+		
 	}
 	
 	public Color(float[] c, String n) {

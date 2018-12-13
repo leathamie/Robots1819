@@ -36,11 +36,14 @@ public class InitColors implements Behavior{
 			echantillon = this.cs.getRGBMode();//utilise le mode rgb ; on peut peut etre le mettre à l'exterieur de la classe
 			float[] vals = new float[3]; // pour utiliser le rgb
 			echantillon.fetchSample(vals, 0);
-			
+
+			/*
 			LCD.clear();
 			LCD.drawString("RGB found : " + vals[0] + " ; " + vals[1] + " ; " + vals[2], 0, 3);
 			Button.ENTER.waitForPressAndRelease();
 			LCD.clear();
+			
+			*/
 			
 			//Color c = new Color(vals, Parameters.COLORS[i]);
 			Color c = new Color(vals);

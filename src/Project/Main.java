@@ -5,6 +5,7 @@ import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.robotics.SampleProvider;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
@@ -27,6 +28,7 @@ public class Main {
 		//create variables
 		EV3ColorSensor captColor = new EV3ColorSensor(SensorPort.S3);
 		Colors colors = new Colors(); 
+		SampleProvider sample = captColor.getRGBMode();;
 		
 		
 		LCD.drawString("Click when you are ready", 0, 3 );
@@ -37,9 +39,10 @@ public class Main {
 		MoveForward moveForward = new MoveForward(); // Avancer
 		SwitchOff swichtOff = new SwitchOff(); //Stop
 		InitColors ci = new InitColors(captColor, colors);
+		DetectColors dc = new DetectColors(captColor, colors, sample);
 		
 		//lauch
-		Behavior[] bArray = {moveForward, ci, swichtOff}; // du moins prioritaire au plus prioritaire
+		Behavior[] bArray = {moveForward, dc, ci, swichtOff}; // du moins prioritaire au plus prioritaire
 		Arbitrator arby = new Arbitrator(bArray);
 		swichtOff.setArbitrator(arby);
 		arby.go();
