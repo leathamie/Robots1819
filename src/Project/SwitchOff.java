@@ -14,12 +14,12 @@ public class SwitchOff implements Behavior{
 	private MovePilot pilot;
 
 
-	public SwitchOff(EV3ColorSensor cs){
+	public SwitchOff(EV3ColorSensor cs, MovePilot p){
 		this.capteur = cs;
-		this.pilot = Main.pilot;
+		this.pilot = p;
 	}
-	public SwitchOff(){
-		this.pilot = Main.pilot;
+	public SwitchOff(MovePilot p){
+		this.pilot = p;
 	}
 
 	public void setArbitrator(Arbitrator a){
