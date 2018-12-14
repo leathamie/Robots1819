@@ -7,5 +7,11 @@ public interface Parameters {
 	static final int BOARD_LENGTH = 7;
 	static final int CELL_SIZE = 8; // approximate value in cm
 	
+	static final int UP = 1;
+	static final int DOWN = -1; 
+	static final int RIGHT = 2;
+	static final int LEFT =-2;
+
+	
 
 }

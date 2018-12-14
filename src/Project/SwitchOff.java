@@ -39,7 +39,7 @@ public class SwitchOff implements Behavior{
 		//le robot ne bouge plus
 		pilot.stop();
 		//on eteint les capteurs
-		//capteur.close();
+		capteur.close();
 
 		arb.stop();
 		System.exit(0);
