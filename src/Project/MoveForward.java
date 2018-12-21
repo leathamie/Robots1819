@@ -27,19 +27,7 @@ public class MoveForward implements Behavior{
 	public void action() {
 		//LCD.clear();
 		//System.out.println("en avant ! ");
-		robot.moveUp();
-		/*
-		float[] vals = new float[3];
-		this.sample.fetchSample(vals, 0);
-		this.c.setRgb(vals);
-		
-		colors.setColorName(this.c);
-		if (this.c.equals(colors.getColor(Parameters.BORDERCOLOR))) {
-			this.crossedColors += 1;
-		}
-		System.out.println(this.crossedColors +"New Color ! " + this.c.getName());
-		*/
-		
+		robot.moveForward();
 		
 		if (robot.colorChange()) {
 			Color c = new Color(robot.actualRGB);
@@ -53,6 +41,19 @@ public class MoveForward implements Behavior{
 			
 		}
 		
+		if(this.crossedColors == Parameters.BOARD_LENGTH) {
+			this.crossedColors = 0; 
+			if(this.robot.getX()%2 == 0) {
+				robot.goTo(Parameters.RIGHT);
+				robot.goTo(Parameters.RIGHT);
+			}else {
+				robot.goTo(Parameters.LEFT);
+				robot.goTo(Parameters.LEFT);
+			}
+		}
+		LCD.drawString(this.robot.getDirection() + "pos" + this.robot.getX() + "," + this.robot.getY(), 0, 4 );
+		
+		
 		
 		
 		
@@ -65,6 +66,7 @@ public class MoveForward implements Behavior{
 	public void suppress() {
 		robot.stop();
 	}
+	 
 
 	
 
