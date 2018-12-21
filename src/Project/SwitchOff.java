@@ -2,25 +2,19 @@ package Project;
 
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
-import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.robotics.navigation.MovePilot;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
 public class SwitchOff implements Behavior{
 	
-	private EV3ColorSensor capteur;
 	private Arbitrator arb;
-	private MovePilot pilot;
+	private Robot bot;
 
 
-	public SwitchOff(EV3ColorSensor cs, MovePilot p){
-		this.capteur = cs;
-		this.pilot = p;
+	public SwitchOff(Robot r){
+		this.bot = r;
 	}
-	public SwitchOff(MovePilot p){
-		this.pilot = p;
-	}
+	
 
 	public void setArbitrator(Arbitrator a){
 		this.arb = a;
@@ -37,9 +31,9 @@ public class SwitchOff implements Behavior{
 		LCD.drawString("EndProcess", 1, 0);
 		LCD.refresh();
 		//le robot ne bouge plus
-		pilot.stop();
+		bot.stop();
 		//on eteint les capteurs
-		capteur.close();
+		bot.closeSensors();
 
 		arb.stop();
 		System.exit(0);

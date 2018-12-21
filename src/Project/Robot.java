@@ -131,7 +131,7 @@ public class Robot {
 	}
 	
 	public void closeSensors() {
-		
+		this.captColor.close();
 	}
 	
 	private boolean quickEquals(float[] c1, float[] c2 ) {

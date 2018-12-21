@@ -16,11 +16,11 @@ import lejos.robotics.subsumption.Behavior;
 public class Twister {
 	
 	private Colors colors;
-	private Robot r;
+	private Robot bot;
 	
 	public Twister() {
 		this.colors = new Colors();
-		this.r = new Robot();
+		this.bot = new Robot();
 	}
 	
 	public void play() {
@@ -28,12 +28,12 @@ public class Twister {
 		Button.waitForAnyPress();
 		LCD.clear();
 		
-		/*
+		
 		//Create Behaviors class
-		MoveForward moveForward = new MoveForward(captColor, colors, sample); // Avancer
+		MoveForward moveForward = new MoveForward(this.bot, colors); // Avancer
 		//MoveForward moveForward = new MoveForward();
-		SwitchOff swichtOff = new SwitchOff(this.captColor, this.pilot); //Stop
-		InitColors ic = new InitColors(captColor, colors);
+		SwitchOff swichtOff = new SwitchOff(this.bot); //Stop
+		InitColors ic = new InitColors(this.bot, colors);
 		//DetectColors dc = new DetectColors(captColor, colors, sample);
 		
 		//lauch
@@ -42,7 +42,7 @@ public class Twister {
 		Arbitrator arby = new Arbitrator(bArray);
 		swichtOff.setArbitrator(arby);
 		arby.go();
-		*/
+		
 		
 	}
 	
