@@ -2,18 +2,16 @@ package Project;
 
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
-import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.robotics.SampleProvider;
 import lejos.robotics.subsumption.Behavior;
 
 public class InitColors implements Behavior{
 
-	EV3ColorSensor cs;
+	Robot robot;
 	Colors colors;
 	
 	//Constructor
-	public InitColors(EV3ColorSensor colorSensor, Colors c){
-		this.cs = colorSensor;
+	public InitColors(Robot r, Colors c){
+		this.robot = r;
 		this.colors = c;
 	}
 
@@ -26,27 +24,14 @@ public class InitColors implements Behavior{
 
 	@Override
 	public void action() {
-		
 		LCD.clear();
-		SampleProvider echantillon;
 		
 		for(int i = 0 ; i < Parameters.COLORS.length ; i++) {
 			LCD.drawString("Montre moi du "+Parameters.COLORS[i], 0, 3);
 			Button.ENTER.waitForPressAndRelease();
-			echantillon = this.cs.getRGBMode();//utilise le mode rgb ; on peut peut etre le mettre à l'exterieur de la classe
-			float[] vals = new float[3]; // pour utiliser le rgb
-			echantillon.fetchSample(vals, 0);
-
-			/*
-			LCD.clear();
-			LCD.drawString("RGB found : " + vals[0] + " ; " + vals[1] + " ; " + vals[2], 0, 3);
-			Button.ENTER.waitForPressAndRelease();
-			LCD.clear();
-			
-			*/
 			
 			//Color c = new Color(vals, Parameters.COLORS[i]);
-			Color c = new Color(vals);
+			Color c = new Color(robot.captureRGB());
 			c.setName(Parameters.COLORS[i]);
 			this.colors.setColor(i,c);
 			
@@ -57,6 +42,7 @@ public class InitColors implements Behavior{
 		}
 		
 		/*
+		// permet de tester la reconnaissance des couleurs 
 		for(int i = 0 ; i < Parameters.COLORS.length ; i++) {
 			LCD.drawString("Test du "+Parameters.COLORS[i], 0, 3);
 			Button.ENTER.waitForPressAndRelease();
@@ -89,7 +75,7 @@ public class InitColors implements Behavior{
 		LCD.refresh();
 		
 	}
-	
+	/*
 	public float[] getColorRGB() {
 		SampleProvider echantillon = this.cs.getRGBMode();//utilise le mode rgb
 		float[] vals = new float[3]; // pour utiliser le rgb
@@ -102,6 +88,7 @@ public class InitColors implements Behavior{
 		this.cs.close();
 		return vals;
 	}
+	*/
 
 
 }
