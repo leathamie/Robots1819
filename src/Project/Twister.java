@@ -14,17 +14,13 @@ import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
 public class Twister {
-	// voir si ça reste là
-	private Wheel wheel1 = WheeledChassis.modelWheel(Motor.B, 56.).offset(-60);
-	private Wheel wheel2 = WheeledChassis.modelWheel(Motor.C, 56.).offset(60);
-	private Chassis chassis = new WheeledChassis(new Wheel[]{wheel1, wheel2},2);
-	private MovePilot pilot = new MovePilot(chassis);
-	private EV3ColorSensor captColor = new EV3ColorSensor(SensorPort.S3);
+	
 	private Colors colors;
-	private SampleProvider sample = captColor.getRGBMode();
+	private Robot r;
 	
 	public Twister() {
 		this.colors = new Colors();
+		this.r = new Robot();
 	}
 	
 	public void play() {
@@ -32,6 +28,7 @@ public class Twister {
 		Button.waitForAnyPress();
 		LCD.clear();
 		
+		/*
 		//Create Behaviors class
 		MoveForward moveForward = new MoveForward(captColor, colors, sample); // Avancer
 		//MoveForward moveForward = new MoveForward();
@@ -45,6 +42,8 @@ public class Twister {
 		Arbitrator arby = new Arbitrator(bArray);
 		swichtOff.setArbitrator(arby);
 		arby.go();
+		*/
+		
 	}
 	
 }
