@@ -8,13 +8,14 @@ import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
-import lejos.utility.Delay;
+
 
 public class Robot {
 	private int x; 
-	private int y; 
+	private int y; // voir si ça reste comme ça
 	private int direction;
 	private int speed = 40;
+	float[] actualRGB;
 	
 	private Wheel wheel1 = WheeledChassis.modelWheel(Motor.B, 56.).offset(-60);
 	private Wheel wheel2 = WheeledChassis.modelWheel(Motor.C, 56.).offset(60);
@@ -27,8 +28,17 @@ public class Robot {
 		this.setX(0); 
 		this.setY(0); 
 		this.setDirection(Parameters.UP);
+		
+		this.actualRGB = new float[3];
+		this.actualRGB[0] = 0;
+		this.actualRGB[1] = 0;
+		this.actualRGB[2] = 0;
 	}
 
+	public float[] getActualRGB(){
+		return this.actualRGB;
+	}
+	
 	public int getX() {
 		return x;
 	}
@@ -65,6 +75,16 @@ public class Robot {
 		float[] vals = new float[3]; // pour utiliser le rgb
 		sample.fetchSample(vals, 0);
 		return vals;
+	}
+	
+	public boolean colorChange() {
+		float[] vals = new float[3];
+		sample.fetchSample(vals, 0);
+		if (!this.quickEquals(this.actualRGB, vals)) {
+			this.actualRGB = vals;
+			return true;
+		}
+		return false;
 	}
 	
 	
@@ -113,6 +133,30 @@ public class Robot {
 	public void closeSensors() {
 		
 	}
+	
+	private boolean quickEquals(float[] c1, float[] c2 ) {
+		for (int i = 0 ; i<3 ; i++) {
+			if ((c1[i] < c2[i]-(0.5*c2[i])) || (c1[i] > c2[i]+(0.5*c2[i]))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void lineCrossed() {
+		switch (this.direction) {
+		case Parameters.UP:
+			this.x += 1;
+		case Parameters.DOWN:
+			this.x -= 1;
+		case Parameters.LEFT:
+			this.y -= 1;
+		case Parameters.RIGHT:
+			this.y += 1; 
+		}
+	}
+	
+	
 	
 
 }

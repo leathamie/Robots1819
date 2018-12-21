@@ -1,32 +1,21 @@
 package Project;
 
 import lejos.hardware.lcd.LCD;
-import lejos.hardware.motor.Motor;
-import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.robotics.SampleProvider;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 
 public class MoveForward implements Behavior{
-	float[] actualRGB;
 	int crossedColors;
-	EV3ColorSensor cs;
 	Colors colors;
-	SampleProvider sample;
+	Robot robot;
 	
 	
 	
 	
-	public MoveForward(EV3ColorSensor colorSensor, Colors c, SampleProvider s) {
+	public MoveForward(Robot r, Colors c) {
 		this.crossedColors = 0;
-		this.cs = colorSensor;
 		this.colors = c;
-		this.sample = s;
-		this.sample = this.cs.getRGBMode();
-		this.actualRGB = new float[3];
-		this.actualRGB[0] = 0;
-		this.actualRGB[1] = 0;
-		this.actualRGB[2] = 0;
+		this.robot = r;
 	}
 	
 	
@@ -38,12 +27,7 @@ public class MoveForward implements Behavior{
 	public void action() {
 		//LCD.clear();
 		//System.out.println("en avant ! ");
-		
-		Motor.B.setSpeed(40);
-		Motor.C.setSpeed(40);
-		Motor.B.forward();
-		Motor.C.forward();
-		
+		robot.moveUp();
 		/*
 		float[] vals = new float[3];
 		this.sample.fetchSample(vals, 0);
@@ -57,22 +41,18 @@ public class MoveForward implements Behavior{
 		*/
 		
 		
-		float[] vals = new float[3]; // pour utiliser le rgb
-		sample.fetchSample(vals, 0);
-
-		
-		Color c = new Color(vals);
-		this.colors.setColorName(c);
-		
-		if (!this.quickEquals(this.actualRGB, vals)) {
-			this.actualRGB = vals;
+		if (robot.colorChange()) {
+			Color c = new Color(robot.actualRGB);
+			this.colors.setColorName(c);
 			if (c.equals(colors.getColor(Parameters.BORDERCOLOR))) {
 				this.crossedColors += 1;
+				robot.lineCrossed();
 				Delay.msDelay(1000);
 			}
+			LCD.drawString(this.crossedColors + " detected as" + c.getName(), 0, 3 );
 			
 		}
-		LCD.drawString(this.crossedColors + " detected as" + c.getName(), 0, 3 );
+		
 		
 		
 		
@@ -83,17 +63,9 @@ public class MoveForward implements Behavior{
 
 	@Override
 	public void suppress() {
-		Motor.B.stop(true);
-		Motor.C.stop(true);
+		robot.stop();
 	}
 
-	private boolean quickEquals(float[] c1, float[] c2 ) {
-		for (int i = 0 ; i<3 ; i++) {
-			if ((c1[i] < c2[i]-(0.5*c2[i])) || (c1[i] > c2[i]+(0.5*c2[i]))) {
-				return false;
-			}
-		}
-		return true;
-	}
+	
 
 }
