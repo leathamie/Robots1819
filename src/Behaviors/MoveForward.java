@@ -1,5 +1,9 @@
-package Project;
+package Behaviors;
 
+import Game.Color;
+import Game.Colors;
+import Game.Parameters;
+import Game.Robot;
 import lejos.hardware.lcd.LCD;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
@@ -30,7 +34,7 @@ public class MoveForward implements Behavior{
 		robot.moveForward();
 		
 		if (robot.colorChange()) {
-			Color c = new Color(robot.actualRGB);
+			Color c = new Color(robot.getActualRGB());
 			this.colors.setColorName(c);
 			if (c.equals(colors.getColor(Parameters.BORDERCOLOR))) {
 				this.crossedColors += 1;

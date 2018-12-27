@@ -1,4 +1,4 @@
-package Project;
+package Game;
 
 // hashset de cases ?
 

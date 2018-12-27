@@ -1,5 +1,6 @@
-package Project;
+package Behaviors;
 
+import Game.Twister;
 
 public class Main {	
 	

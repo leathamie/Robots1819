@@ -1,4 +1,4 @@
-package Project;
+package Game;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

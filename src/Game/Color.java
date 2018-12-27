@@ -1,4 +1,4 @@
-package Project;
+package Game;
 
 public class Color {
 	private float[] rgb = new float[3];

@@ -1,4 +1,4 @@
-package Project;
+package Game;
 
 public class Colors {
 	private boolean initColors;

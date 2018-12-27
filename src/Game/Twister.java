@@ -1,5 +1,8 @@
-package Project;
+package Game;
 
+import Behaviors.InitColors;
+import Behaviors.MoveForward;
+import Behaviors.SwitchOff;
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;

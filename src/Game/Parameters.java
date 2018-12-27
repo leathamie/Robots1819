@@ -1,4 +1,4 @@
-package Project;
+package Game;
 
 public interface Parameters {
 	static final String BORDERCOLOR = "black";

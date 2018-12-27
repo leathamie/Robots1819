@@ -1,5 +1,6 @@
-package Project;
+package Behaviors;
 
+import Game.Robot;
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.robotics.subsumption.Arbitrator;

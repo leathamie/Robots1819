@@ -1,5 +1,9 @@
-package Project;
+package Behaviors;
 
+import Game.Color;
+import Game.Colors;
+import Game.Parameters;
+import Game.Robot;
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.robotics.subsumption.Behavior;
