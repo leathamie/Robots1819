@@ -22,8 +22,8 @@ import lejos.robotics.navigation.MovePilot;
 
 
 public class Robot {
-	private int x; 
-	private int y; // voir si ça reste comme ça
+	private int x;
+	private int y;
 	private int direction;
 	private int speed = 40;
 	float[] actualRGB;
