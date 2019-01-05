@@ -294,11 +294,12 @@ public class Robot {
 		return o;
 	}
 	
-	public List<Node> findPath(int [] initPos, int [] finalPos, Board b ) {
+	public 
+	public List<Node> findPath( int [] finalPos, Board b ) {
 		// vérifier la taille des tableaux 
 		// vérifier que c'est bien dans le tableau 
 		
-		Node initialNode = new Node(initPos[0], initPos[1]);
+		Node initialNode = new Node(this.x, this.y);
         Node finalNode = new Node(finalPos[0], finalPos[1]);
         int rows = b.getLengthY();
         int cols = b.getLengthX();
@@ -311,11 +312,11 @@ public class Robot {
         }
         return path;
 	}
-	public List<Node> findPath(int [] initPos, int [] finalPos, Board b, int[][] blocksArray ) {
+	public List<Node> findPath( int [] finalPos, Board b, int[][] blocksArray ) {
 		// vérifier la taille des tableaux 
 		// vérifier que c'est bien dans le tableau 
 		
-		Node initialNode = new Node(initPos[0], initPos[1]);
+		Node initialNode = new Node(this.x, this.y);
         Node finalNode = new Node(finalPos[0], finalPos[1]);
         int rows = b.getLengthY();
         int cols = b.getLengthX();
@@ -326,6 +327,53 @@ public class Robot {
             System.out.println(node);
         }
         return path; 
+	}
+	
+	public void folowPath (List<Node> path) {
+		for (Node node : path) {
+            if ((this.x + 1 == node.getCol())  && this.y == node.getRow()) {
+            	if (this.direction == Parameters.UP) {
+            		this.goTo(Parameters.RIGHT);
+            	}else if (this.direction == Parameters.DOWN) {
+            		this.goTo(Parameters.LEFT);
+            	}else if (this.direction == Parameters.LEFT) {
+            		this.goTo(Parameters.DOWN);
+            	}else {
+            		this.goTo(Parameters.UP);
+            	}
+            }else if (this.x - 1 == node.getCol() && this.y == node.getRow()) {
+            	if (this.direction == Parameters.UP) {
+            		this.goTo(Parameters.LEFT);
+            	}else if (this.direction == Parameters.DOWN) {
+            		this.goTo(Parameters.RIGHT);
+            	}else if (this.direction == Parameters.LEFT) {
+            		this.goTo(Parameters.UP);
+            	}else {
+            		this.goTo(Parameters.DOWN);
+            	}
+            }else if (this.x == node.getCol() && this.y + 1 == node.getRow()) {
+	        	if (this.direction == Parameters.UP) {
+	        		this.goTo(Parameters.UP);
+	        	}else if (this.direction == Parameters.DOWN) {
+	        		this.goTo(Parameters.DOWN);
+	        	}else if (this.direction == Parameters.LEFT) {
+	        		this.goTo(Parameters.RIGHT);
+	        	}else {
+	        		this.goTo(Parameters.LEFT);
+	        	}
+	        }else if (this.x == node.getCol() && this.y - 1 == node.getRow()) {
+	        	if (this.direction == Parameters.UP) {
+	        		this.goTo(Parameters.DOWN);
+	        	}else if (this.direction == Parameters.DOWN) {
+	        		this.goTo(Parameters.UP);
+	        	}else if (this.direction == Parameters.LEFT) {
+	        		this.goTo(Parameters.LEFT);
+	        	}else {
+	        		this.goTo(Parameters.RIGHT);
+	        	}
+	        }
+            
+        }
 	}
 	
 
