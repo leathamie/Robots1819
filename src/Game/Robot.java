@@ -295,9 +295,18 @@ public class Robot {
 		return o;
 	}
 	
-	public Integer[] findClosest(ArrayList<Integer[]> pos) {
+	public void goTo(Color c, Board b) {
+		List<int[]> posOfC = (List<int[]>) b.getAllPosition(c);
+		int [] goal = this.findClosest(posOfC);
+		List<Node> cells = findPath(goal, b);
+		this.folowPath(cells);
+		
+		
+	}
+	
+	private int[] findClosest(List<int[]> pos) {
 		if (!pos.isEmpty()) {
-			Integer[] closest = pos.get(0); 
+			int[] closest = pos.get(0); 
 			int distClosest = Math.abs(closest[0] - this.x) + Math.abs(closest[1] - this.y);
 			for (int i = 1 ; i <pos.size(); i++) {
 				int dist = Math.abs(pos.get(i)[0] - this.x) + Math.abs(pos.get(i)[1] - this.y);
@@ -311,7 +320,7 @@ public class Robot {
 		return null;	
 	}
 	
-	public List<Node> findPath( int [] finalPos, Board b ) {
+	private List<Node> findPath( int [] finalPos, Board b ) {
 		// vérifier la taille des tableaux 
 		// vérifier que c'est bien dans le tableau 
 		

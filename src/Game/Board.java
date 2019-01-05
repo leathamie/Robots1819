@@ -39,17 +39,18 @@ public class Board {
 		return this.board[0].length;
 	}
 	
-	public ArrayList<Integer[]> getAllPosition(Color c){
-		ArrayList<Integer[]> positions  = new ArrayList<Integer[]>();
+	public java.util.List<int[]> getAllPosition(Color c){
+		java.util.List<int[]> positions = null;
 		for (int x =0 ; x < this.board.length ; x ++ ) {
 			for (int y = 0 ; y < this.board[0].length ; y++) {
 				if (this.board[x][y].equals(c)) {
-					Integer []pos = {x,y};
+					int[]pos = {x,y};
 					positions.add(pos);
 				}
 			}
 		}
 		return positions;
 	}
+	
 	
 }
