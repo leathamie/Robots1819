@@ -295,9 +295,20 @@ public class Robot {
 		return o;
 	}
 	
-	public findClosest(ArrayList<Integer[]> pos) {
-		int [] closest = (int) pos.get(0);
-		// gterminer la distance entre deux cases 
+	public Integer[] findClosest(ArrayList<Integer[]> pos) {
+		if (!pos.isEmpty()) {
+			Integer[] closest = pos.get(0); 
+			int distClosest = Math.abs(closest[0] - this.x) + Math.abs(closest[1] - this.y);
+			for (int i = 1 ; i <pos.size(); i++) {
+				int dist = Math.abs(pos.get(i)[0] - this.x) + Math.abs(pos.get(i)[1] - this.y);
+				if (dist < distClosest) {
+					distClosest = dist; 
+					closest = pos.get(i);
+				}
+			}
+			return closest;
+		}
+		return null;	
 	}
 	
 	public List<Node> findPath( int [] finalPos, Board b ) {
