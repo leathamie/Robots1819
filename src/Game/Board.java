@@ -1,5 +1,10 @@
 package Game;
 
+import java.awt.List;
+import java.util.ArrayList;
+
+import AStar.Node;
+
 // hashset de cases ?
 
 
@@ -33,4 +38,18 @@ public class Board {
 	public int getLengthY() {
 		return this.board[0].length;
 	}
+	
+	public ArrayList<Integer[]> getAllPosition(Color c){
+		ArrayList<Integer[]> positions  = new ArrayList<Integer[]>();
+		for (int x =0 ; x < this.board.length ; x ++ ) {
+			for (int y = 0 ; y < this.board[0].length ; y++) {
+				if (this.board[x][y].equals(c)) {
+					Integer []pos = {x,y};
+					positions.add(pos);
+				}
+			}
+		}
+		return positions;
+	}
+	
 }

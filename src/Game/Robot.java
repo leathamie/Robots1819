@@ -6,6 +6,7 @@ import java.io.FilterInputStream;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -294,7 +295,11 @@ public class Robot {
 		return o;
 	}
 	
-	public 
+	public findClosest(ArrayList<Integer[]> pos) {
+		int [] closest = (int) pos.get(0);
+		// gterminer la distance entre deux cases 
+	}
+	
 	public List<Node> findPath( int [] finalPos, Board b ) {
 		// vérifier la taille des tableaux 
 		// vérifier que c'est bien dans le tableau 
