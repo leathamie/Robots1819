@@ -27,4 +27,10 @@ public class Board {
 	public boolean isInitBoard() {
 		return this.initBoard;
 	}
+	public int getLengthX() {
+		return this.board.length;
+	}
+	public int getLengthY() {
+		return this.board[0].length;
+	}
 }

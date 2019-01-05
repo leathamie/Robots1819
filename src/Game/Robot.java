@@ -6,6 +6,7 @@ import java.io.FilterInputStream;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Random;
 
 import lejos.hardware.motor.Motor;
@@ -19,6 +20,8 @@ import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
+import AStar.AStar;
+import AStar.Node;
 
 
 public class Robot {
@@ -289,6 +292,40 @@ public class Robot {
 			}		
 		} catch(Exception e) { }
 		return o;
+	}
+	
+	public List<Node> findPath(int [] initPos, int [] finalPos, Board b ) {
+		// vérifier la taille des tableaux 
+		// vérifier que c'est bien dans le tableau 
+		
+		Node initialNode = new Node(initPos[0], initPos[1]);
+        Node finalNode = new Node(finalPos[0], finalPos[1]);
+        int rows = b.getLengthY();
+        int cols = b.getLengthX();
+        AStar aStar = new AStar(rows, cols, initialNode, finalNode);
+        //int[][] blocksArray = new int[][]{{1, 3}, {2, 3}, {3, 3}};
+        //aStar.setBlocks(blocksArray);
+        List<Node> path = aStar.findPath();
+        for (Node node : path) {
+            System.out.println(node);
+        }
+        return path;
+	}
+	public List<Node> findPath(int [] initPos, int [] finalPos, Board b, int[][] blocksArray ) {
+		// vérifier la taille des tableaux 
+		// vérifier que c'est bien dans le tableau 
+		
+		Node initialNode = new Node(initPos[0], initPos[1]);
+        Node finalNode = new Node(finalPos[0], finalPos[1]);
+        int rows = b.getLengthY();
+        int cols = b.getLengthX();
+        AStar aStar = new AStar(rows, cols, initialNode, finalNode);
+        aStar.setBlocks(blocksArray);
+        List<Node> path = aStar.findPath();
+        for (Node node : path) {
+            System.out.println(node);
+        }
+        return path; 
 	}
 	
 
