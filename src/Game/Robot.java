@@ -332,8 +332,6 @@ public class Robot {
 		int [] goal = this.findClosest(posOfC);
 		List<Node> cells = findPath(goal, b);
 		this.folowPath(cells);
-		
-		
 	}
 	
 	private int[] findClosest(List<int[]> pos) {

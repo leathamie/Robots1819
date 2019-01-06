@@ -2,6 +2,7 @@ package Game;
 
 import Behaviors.InitBoard;
 import Behaviors.InitColors;
+import Behaviors.Play;
 import Behaviors.SwitchOff;
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
@@ -31,14 +32,14 @@ public class Twister {
 		//Create Behaviors class
 		
 		InitBoard initBoard = new InitBoard(this.bot, this.colors, this.twisterBoard);
-		
+		Play play = new Play(this.bot, this.colors, this.twisterBoard);
 		SwitchOff swichtOff = new SwitchOff(this.bot); //Stop
 		InitColors ic = new InitColors(this.bot, colors);
 		
 		
 		//lauch
 		//Behavior[] bArray = {moveForward, dc, ic, swichtOff}; // du moins prioritaire au plus prioritaire
-		Behavior[] bArray = {initBoard, ic, swichtOff}; // du moins prioritaire au plus prioritaire
+		Behavior[] bArray = {play, initBoard, ic, swichtOff}; // du moins prioritaire au plus prioritaire
 		Arbitrator arby = new Arbitrator(bArray);
 		swichtOff.setArbitrator(arby);
 		arby.go();
