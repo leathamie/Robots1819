@@ -12,6 +12,7 @@ public interface Parameters {
 	static final int RIGHT = 2;
 	static final int LEFT =-2;
 
+	static final int WAITINGDURATION = 300;
 	
 
 }

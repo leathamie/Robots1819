@@ -25,6 +25,7 @@ public class Twister {
 		LCD.drawString("Click when you are ready", 0, 3 );
 		Button.waitForAnyPress();
 		LCD.clear();
+		robotChoice();
 		
 		
 		//Create Behaviors class
@@ -44,5 +45,19 @@ public class Twister {
 		
 		
 	}
+	public void robotChoice(){
+        LCD.drawString("Veuillez choisir le nom de ce Robot", 0, 0);
+        LCD.drawString("Bouton Haut : Robot 1", 0,2);
+        LCD.drawString("Bouton du Bas : Robot 2", 0,3);
+       
+        if(Button.UP.isDown()){
+            this.bot.setFirstPlayer(true);
+            LCD.clear();
+           
+        } else if(Button.DOWN.isDown()){           
+        	this.bot.setFirstPlayer(false);
+            LCD.clear();
+        }
+    }
 	
 }

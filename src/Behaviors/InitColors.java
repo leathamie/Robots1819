@@ -23,7 +23,7 @@ public class InitColors implements Behavior{
 
 	@Override
 	public boolean takeControl() {
-		return !this.colors.isInitColors();
+		return !this.colors.isInitColors() && this.robot.isFirstPlayer();
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import java.util.Random;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.remote.nxt.BTConnection;
 import lejos.remote.nxt.BTConnector;
 import lejos.remote.nxt.NXTConnection;
@@ -30,12 +31,15 @@ public class Robot {
 	private int y;
 	private int direction;
 	private int speed = 40;
-	float[] actualRGB;
+	private float[] actualRGB;
+	private boolean firstPlayer;
 	
 	private Wheel wheel1 = WheeledChassis.modelWheel(Motor.B, 56.).offset(-60);
 	private Wheel wheel2 = WheeledChassis.modelWheel(Motor.C, 56.).offset(60);
 	private Chassis chassis = new WheeledChassis(new Wheel[]{wheel1, wheel2},2);
 	private MovePilot pilot = new MovePilot(chassis);
+	private static EV3GyroSensor gyrosensor = new EV3GyroSensor(SensorPort.S1);
+	final SampleProvider sp = gyrosensor.getAngleAndRateMode();
 	
 	
 	private EV3ColorSensor captColor = new EV3ColorSensor(SensorPort.S3);
@@ -59,6 +63,15 @@ public class Robot {
 		this.actualRGB[0] = 0;
 		this.actualRGB[1] = 0;
 		this.actualRGB[2] = 0;
+		this.firstPlayer = false;
+	}
+	
+	public void setFirstPlayer(boolean b) {
+		this.firstPlayer = b;
+	}
+	
+	public boolean isFirstPlayer() {
+		return this.firstPlayer;
 	}
 
 	public float[] getActualRGB(){
@@ -161,9 +174,27 @@ public class Robot {
 	}
 	
 	private void moveRight() {
-		pilot.travel(125);
-        pilot.rotate(80);
-        pilot.travel(55);
+        Motor.A.setSpeed(speed);
+        Motor.C.setSpeed(speed);
+        int angle = 0; 
+        while(true){
+            float [] sample = new float[sp.sampleSize()];
+            sp.fetchSample(sample, 0);
+            angle = (int)sample[0];
+           
+            pilot.travel(125);
+            //je dois utiliser backward et forward des moteurs parce que sinon le robot va faire un arc de cercle
+            //et en plus si je veux utiliser pilot je dois donner un angle donc il va s'en foutre de si il dépasse les 90 degres
+            Motor.A.backward();
+            Motor.C.forward();
+           
+            if (angle >= 90){
+                Motor.A.stop(true);
+                Motor.C.stop(true);
+                pilot.travel(55);
+                break;
+            }
+        }
 	}
 	
 	public void stop() {
@@ -213,6 +244,7 @@ public class Robot {
 		int value = rand.nextInt(Parameters.COLORS.length - 2);
 		return value;
 	}
+	
 	public boolean sendData(int data) {
 		os = btc.openOutputStream();
 		dos = new DataOutputStream(os);

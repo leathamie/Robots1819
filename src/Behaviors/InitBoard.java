@@ -6,6 +6,7 @@ import Game.Color;
 import Game.Colors;
 import Game.Parameters;
 import Game.Robot;
+import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
@@ -27,7 +28,7 @@ public class InitBoard implements Behavior{
 	
 	
 	public boolean takeControl() {
-		return !this.board.isInitBoard();
+		return !this.board.isInitBoard() && this.robot.isFirstPlayer();
 	}
 
 	@Override
@@ -79,6 +80,10 @@ public class InitBoard implements Behavior{
 	@Override
 	public void suppress() {
 		robot.stop();
+		LCD.clear();
+		LCD.drawString("Shwich on robot 2 !", 0, 2 );
+		LCD.drawString("And press center ", 0, 2 );
+		Button.ENTER.waitForPressAndRelease();
 	}
 	 
 	
