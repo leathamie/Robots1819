@@ -253,34 +253,66 @@ public class Robot {
 	}
 	
 	private void moveLeft() {
-		pilot.rotate(-80);
-        pilot.travel(-55);
+		// variables used to control the gyro sensor
+		EV3GyroSensor gyrosensor = new EV3GyroSensor(SensorPort.S1);
+		final SampleProvider sp = gyrosensor.getAngleAndRateMode();
+
+		//Motor.A.setSpeed(speed);
+		//Motor.C.setSpeed(speed);
+		pilot.travel(125);
+
+		//Motor.A.backward();
+		//Motor.C.forward();
+		int angle = 0; 
+
+		while(angle > -89 || angle < -91){
+			float [] sample = new float[sp.sampleSize()];
+			sp.fetchSample(sample, 0);
+			angle = (int)sample[0];
+			
+			if(angle > -5){
+				pilot.rotate(-80);
+			}if (angle < -90){
+				pilot.rotate(1);
+			} else {
+				pilot.rotate(-1);		
+			}
+		}
+		Motor.A.stop(true);
+		Motor.C.stop(true);
+		pilot.travel(55);
+	}
+	private void moveRight() {
+		// variables used to control the gyro sensor
+		EV3GyroSensor gyrosensor = new EV3GyroSensor(SensorPort.S1);
+		final SampleProvider sp = gyrosensor.getAngleAndRateMode();
+
+		//Motor.A.setSpeed(speed);
+		//Motor.C.setSpeed(speed);
+		pilot.travel(125);
+
+		//Motor.A.backward();
+		//Motor.C.forward();
+		int angle = 0; 
+
+		while(angle < 89 || angle > 91){
+			float [] sample = new float[sp.sampleSize()];
+			sp.fetchSample(sample, 0);
+			angle = (int)sample[0];
+			
+			if(angle < 5){
+				pilot.rotate(80);
+			}if (angle > 90){
+				pilot.rotate(-1);
+			} else {
+				pilot.rotate(1);		
+			}
+		}
+		Motor.A.stop(true);
+		Motor.C.stop(true);
+		pilot.travel(55);
 	}
 	
-	private void moveRight() {
-        Motor.A.setSpeed(speed);
-        Motor.C.setSpeed(speed);
-        int angle = 0; 
-        pilot.travel(125);
-        while(true){
-            float [] sample = new float[sp.sampleSize()];
-            sp.fetchSample(sample, 0);
-            angle = (int)sample[0];
-           
-            
-            //je dois utiliser backward et forward des moteurs parce que sinon le robot va faire un arc de cercle
-            //et en plus si je veux utiliser pilot je dois donner un angle donc il va s'en foutre de si il dépasse les 90 degres
-            Motor.A.backward();
-            Motor.C.forward();
-           
-            if (angle >= 90){
-                Motor.A.stop(true);
-                Motor.C.stop(true);
-                pilot.travel(55);
-                break;
-            }
-        }
-	}
 	
 	public void stop() {
 		Motor.B.stop(true);
