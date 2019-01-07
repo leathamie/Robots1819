@@ -1,6 +1,8 @@
 package Behaviors;
 
 
+import java.util.ArrayList;
+
 import Game.Board;
 import Game.Color;
 import Game.Colors;
@@ -42,7 +44,7 @@ public class InitBoard implements Behavior{
 	 */
 	public boolean takeControl() {
 		//behavior is launched if the board isn't set AND if the current robot is the robot1
-		return !this.board.isInitBoard() && this.robot.isFirstPlayer();
+		return !this.board.isInitBoard();
 	}
 
 	/**
@@ -51,54 +53,68 @@ public class InitBoard implements Behavior{
 	 */
 	@Override
 	public void action() {
-
-		//the robot goes forward without stopping
-		robot.moveForward();
-		
-		//if the color of the case the robot is on, is different from the color of the precedent case then
-		if (robot.colorChange()) {
-			Color c = new Color(robot.getActualRGB());
-			//allows to set the name of the color based on its RGB code
-			this.colors.setColorName(c);
+		if (this.robot.isFirstPlayer()) {
+			//the robot goes forward without stopping
+			robot.moveForward();
 			
-			// if the scanned color is black
-			if (c.equals(colors.getColor(Parameters.BORDERCOLOR))) {
-				this.crossedColors += 1;
-				// call the lineCrossed function that allows to update the robot position
-				robot.lineCrossed();
-				Delay.msDelay(1000);
-			}else {
-				//the current cell is marked with its color
-				board.setCell(robot.getX(),robot.getY(), c);
-			}
-			LCD.drawString(this.crossedColors + " detected as" + c.getName(), 0, 3 );
-			
-		}
-		
-		//if the robot reached the edge of the board
-		// we check 
-		if(this.crossedColors == Parameters.BOARD_LENGTH) {
-			this.crossedColors = 0;
-			if(this.robot.getX() != Parameters.BOARD_WIDTH) {
-				// test if the robot has to go to the left or the right to stay on the board
-				if(this.robot.getX()%2 == 0) {
-					robot.goTo(Parameters.RIGHT);
-					robot.goTo(Parameters.RIGHT);
-				}else {
-					robot.goTo(Parameters.LEFT);
-					robot.goTo(Parameters.LEFT);
-				}
-			}else {
+			//if the color of the case the robot is on, is different from the color of the precedent case then
+			if (robot.colorChange()) {
+				Color c = new Color(robot.getActualRGB());
+				//allows to set the name of the color based on its RGB code
+				this.colors.setColorName(c);
 				
-				// we set the initBoard variable to true
-				// it means the initialisation of all the color in the board is over
-				board.setInitBoard();
+				// if the scanned color is black
+				if (c.equals(colors.getColor(Parameters.BORDERCOLOR))) {
+					this.crossedColors += 1;
+					// call the lineCrossed function that allows to update the robot position
+					robot.lineCrossed();
+					Delay.msDelay(1000);
+				}else {
+					//the current cell is marked with its color
+					board.setCell(robot.getX(),robot.getY(), c);
+				}
+				LCD.drawString(this.crossedColors + " detected as" + c.getName(), 0, 3 );
+				
 			}
 			
-		}
-		//print the position of the robot and the direction it faces 
-		LCD.drawString(this.robot.getDirection() + "pos" + this.robot.getX() + "," + this.robot.getY(), 0, 4 );
+			//if the robot reached the edge of the board
+			// we check 
+			if(this.crossedColors == Parameters.BOARD_LENGTH) {
+				this.crossedColors = 0;
+				if(this.robot.getX() != Parameters.BOARD_WIDTH) {
+					// test if the robot has to go to the left or the right to stay on the board
+					if(this.robot.getX()%2 == 0) {
+						robot.goTo(Parameters.RIGHT);
+						robot.goTo(Parameters.RIGHT);
+					}else {
+						robot.goTo(Parameters.LEFT);
+						robot.goTo(Parameters.LEFT);
+					}
+				}else {
+					LCD.clear();
+					LCD.drawString("Make sure bot2 is ready", 0, 2 );
+					LCD.drawString("Press enter", 0, 3 );
+					Button.ENTER.waitForPressAndRelease();
+					LCD.drawString("sending board ...", 0, 4 );
+					// we send the initialized board to the other robot
+					this.robot.sendObject(this.board); 
+					
+					// we set the initBoard variable to true
+					// it means the initialisation of all the color in the board is over
+					this.board.setInitBoard();
+				}
+				
+			}
+			//print the position of the robot and the direction it faces 
+			LCD.drawString(this.robot.getDirection() + "pos" + this.robot.getX() + "," + this.robot.getY(), 0, 4 );
 		
+		}else {
+			// if this robot is not the robot 1, he will only receive the board already initialised
+			this.board = (Board) robot.receiveObject(Parameters.WAITINGDURATION);
+			this.board.setInitBoard();
+			
+		}
+			
 		
 			
 	}
@@ -111,9 +127,6 @@ public class InitBoard implements Behavior{
 	public void suppress() {
 		robot.stop();
 		LCD.clear();
-		LCD.drawString("Shwich on robot 2 !", 0, 2 );
-		LCD.drawString("And press center ", 0, 2 );
-		Button.ENTER.waitForPressAndRelease();
 	}
 	 
 	

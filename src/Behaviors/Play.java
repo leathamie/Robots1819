@@ -2,8 +2,7 @@ package Behaviors;
 
 import java.awt.List;
 import java.util.ArrayList;
-
-import com.jcraft.jsch.jce.Random;
+import java.util.Random;
 
 import Game.Board;
 import Game.Color;

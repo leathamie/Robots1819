@@ -90,6 +90,11 @@ public class Robot {
 		if (!this.firstPlayer) {
 			this.x = Parameters.BOARD_WIDTH - 1;
 			this.y = Parameters.BOARD_LENGTH - 1;
+			this.direction = Parameters.DOWN;
+		}else {
+			this.x = 0;
+			this.y = 0;
+			this.direction = Parameters.UP;
 		}
 	}
 	
@@ -257,12 +262,6 @@ public class Robot {
 		EV3GyroSensor gyrosensor = new EV3GyroSensor(SensorPort.S1);
 		final SampleProvider sp = gyrosensor.getAngleAndRateMode();
 
-		//Motor.A.setSpeed(speed);
-		//Motor.C.setSpeed(speed);
-		pilot.travel(125);
-
-		//Motor.A.backward();
-		//Motor.C.forward();
 		int angle = 0; 
 
 		while(angle > -89 || angle < -91){
@@ -280,19 +279,13 @@ public class Robot {
 		}
 		Motor.A.stop(true);
 		Motor.C.stop(true);
-		pilot.travel(55);
+		pilot.travel(-55);
 	}
 	private void moveRight() {
 		// variables used to control the gyro sensor
 		EV3GyroSensor gyrosensor = new EV3GyroSensor(SensorPort.S1);
 		final SampleProvider sp = gyrosensor.getAngleAndRateMode();
 
-		//Motor.A.setSpeed(speed);
-		//Motor.C.setSpeed(speed);
-		pilot.travel(125);
-
-		//Motor.A.backward();
-		//Motor.C.forward();
 		int angle = 0; 
 
 		while(angle < 89 || angle > 91){
@@ -310,7 +303,7 @@ public class Robot {
 		}
 		Motor.A.stop(true);
 		Motor.C.stop(true);
-		pilot.travel(55);
+		pilot.travel(-55);
 	}
 	
 	
@@ -328,7 +321,7 @@ public class Robot {
 		this.captColor.close();
 	}
 	
-	//COMPREND MAIS SAIS PAS COMMENT EXPLIQUER
+	//This quick equals compare 2 rgb codes
 	private boolean quickEquals(float[] c1, float[] c2 ) {
 		for (int i = 0 ; i<3 ; i++) {
 			if ((c1[i] < c2[i]-(0.5*c2[i])) || (c1[i] > c2[i]+(0.5*c2[i]))) {
