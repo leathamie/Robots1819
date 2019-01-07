@@ -25,23 +25,34 @@ import lejos.robotics.navigation.MovePilot;
 import AStar.AStar;
 import AStar.Node;
 
-
+/**
+ * 
+ * Robot class
+ *
+ */
 public class Robot {
+	
+	//position & direction of the robot
 	private int x;
 	private int y;
 	private int direction;
+	//speed of the robot
 	private int speed = 40;
+	//the actuel rgb code of the cell the robot is on
 	private float[] actualRGB;
+	// is this robot the firstplayer
 	private boolean firstPlayer;
 	
+	// set of variable used to pilot the robot
 	private Wheel wheel1 = WheeledChassis.modelWheel(Motor.B, 56.).offset(-60);
 	private Wheel wheel2 = WheeledChassis.modelWheel(Motor.C, 56.).offset(60);
 	private Chassis chassis = new WheeledChassis(new Wheel[]{wheel1, wheel2},2);
 	private MovePilot pilot = new MovePilot(chassis);
+	// variables used to control the gyro sensor
 	private static EV3GyroSensor gyrosensor = new EV3GyroSensor(SensorPort.S1);
 	final SampleProvider sp = gyrosensor.getAngleAndRateMode();
 	
-	
+	// variables used to control the color sensor
 	private EV3ColorSensor captColor = new EV3ColorSensor(SensorPort.S3);
 	private SampleProvider sample = captColor.getRGBMode();
 	
@@ -52,6 +63,9 @@ public class Robot {
 	private DataOutputStream dos;
 	private ObjectOutputStream oos;
 	
+	/**
+	 * Robot consructor
+	 */
 	public Robot() {
 		this.x = 0; 
 		this.y = 0; 
@@ -66,39 +80,88 @@ public class Robot {
 		this.firstPlayer = false;
 	}
 	
+	/**
+	 * Function setFirstLPlayer
+	 * @param b
+	 * allows to decide if the current robot is the firstplayer
+	 */
 	public void setFirstPlayer(boolean b) {
 		this.firstPlayer = b;
 	}
 	
+	/**
+	 * Function isFirstPlayer
+	 * @return boolean
+	 * allows to verify if the current robot is the firstplayer
+	 */
 	public boolean isFirstPlayer() {
 		return this.firstPlayer;
 	}
 
+	/**
+	 * Function getActualRGB
+	 * @return float[]
+	 * returns an array of float to get the rgb code of the cell the robot is on
+	 */
 	public float[] getActualRGB(){
 		return this.actualRGB;
 	}
 	
+	/**
+	 * Function getX
+	 * @return int
+	 * return the x position of the robot
+	 */
 	public int getX() {
 		return x;
 	}
 
+	/**
+	 * Function setX
+	 * @param x
+	 * modify the x position of the robot
+	 */
 	public void setX(int x) {
 		this.x = x;
 	}
 
+	/**
+	 * Function getY
+	 * @return int
+	 * return the y position of the robot
+	 */
 	public int getY() {
 		return y;
 	}
-
+	
+	/**
+	 * Function setY
+	 * @param y
+	 * modify the y position of the robot
+	 */
 	public void setY(int y) {
 		this.y = y;
 	}
 
+	/**
+	 * Function getDirection
+	 * @return int
+	 * return the direction, as an int, the robot is facing 
+	 */
 	public int getDirection() {
 		return direction;
 	}
 
+	
+	
+	// IL FAUDRAIT EXPLIQUER CE QU'IL SE PASSE DANS LES IF
+	/**
+	 * Function setDirection
+	 * @param d
+	 * modify the direction the robot is facing
+	 */
 	private void setDirection(int d) {
+		// checks if the parameter is equal to one of the four possibilities stored in the interface Parameters
 		if(d == Parameters.LEFT || d == Parameters.RIGHT || d == Parameters.UP || d == Parameters.DOWN) {
 			if(this.direction == Parameters.UP) {
 				this.direction = d;
@@ -118,6 +181,11 @@ public class Robot {
 		}
 	}
 	
+	
+	/**
+	 * Function moveForward
+	 * launch the two motors for the robots wheels
+	 */
 	public void moveForward() {
 		Motor.B.setSpeed(this.speed);
 		Motor.C.setSpeed(this.speed);
@@ -125,12 +193,22 @@ public class Robot {
 		Motor.C.forward();
 	}
 	
+	/**
+	 * Function captureRGB
+	 * @return float[]
+	 * return what the color sensor scan by using the variable sample
+	 */
 	public float[] captureRGB() {
 		float[] vals = new float[3]; // pour utiliser le rgb
 		sample.fetchSample(vals, 0);
 		return vals;
 	}
 	
+	/**
+	 * Function colorChange
+	 * @return boolean
+	 * checks if the current rgb code is different from the scanned rgb code
+	 */
 	public boolean colorChange() {
 		float[] vals = new float[3];
 		sample.fetchSample(vals, 0);
@@ -142,8 +220,10 @@ public class Robot {
 	}
 	
 	
-	/*
-	 * Prends en parametre une direction sous forme d'entier et se déplace dans la direction appropriée 
+	/**
+	 * Function goTo
+	 * @param direct
+	 * use the direction in parameters, and then move to the appropriated direction
 	 */
 	public void goTo(int direct) {
 		this.setDirection(direct);
@@ -202,10 +282,16 @@ public class Robot {
 		Motor.C.stop(true);
 	}
 	
+	
+	/**
+	 * Function closeSensors
+	 * allows the program to close all the sensors
+	 */
 	public void closeSensors() {
 		this.captColor.close();
 	}
 	
+	//COMPREND MAIS SAIS PAS COMMENT EXPLIQUER
 	private boolean quickEquals(float[] c1, float[] c2 ) {
 		for (int i = 0 ; i<3 ; i++) {
 			if ((c1[i] < c2[i]-(0.5*c2[i])) || (c1[i] > c2[i]+(0.5*c2[i]))) {
@@ -215,7 +301,12 @@ public class Robot {
 		return true;
 	}
 	
+	/**
+	 * Function lineCrossed
+	 * allows to update the position of the robot
+	 */	
 	public void lineCrossed() {
+		//if the direction of 
 		if (this.direction == Parameters.UP) {
 			this.y = this.y + 1;
 		}else if (direction == Parameters.DOWN) {
@@ -239,17 +330,28 @@ public class Robot {
 		*/
 	}
 	
+	/**
+	 * Function chooseColor
+	 * @return int
+	 * randomly choose an int that will be send to the other robot in an other function
+	 */
 	public int chooseColor() {
 		Random rand = new Random();
 		int value = rand.nextInt(Parameters.COLORS.length - 2);
 		return value;
 	}
 	
+	/**
+	 * Function sendData
+	 * @param data
+	 * @return boolean
+	 * allows a robot to sens an int to the other robot
+	 */
 	public boolean sendData(int data) {
 		os = btc.openOutputStream();
 		dos = new DataOutputStream(os);
 		System.out.println("\n\nEnvoi");
-		//ON ENVOIE LA VALEUR; dans ce cas là c'est le nombre random
+		// we send the data
 		try{
 			dos.write(data);
 			dos.flush();
@@ -261,11 +363,21 @@ public class Robot {
 			return false;
 		}
 	}
+	
+	/**
+	 * Function sendObject
+	 * @param o
+	 * @return boolean
+	 * allows a robot to send an object to the other robot
+	 */
 	public boolean sendObject(Object o) {
 		try {
+			// create the link of connectoin
 			os = btc.openOutputStream();
 			oos = new ObjectOutputStream(os);
+			// store the object to send (like a git commit)
 			oos.writeObject(o);
+			// send the object (like a git push)
 			oos.flush();
 			System.out.println("Envoyé\n");
 			oos.close();
@@ -276,10 +388,15 @@ public class Robot {
 		}
 	}
 	
+	/**
+	 * Function receiveDate
+	 * @param waitingMs
+	 * @return int
+	 * allows the robot to receive an int that will represent a color
+	 */
 	public int receiveData(int waitingMs) {
 		int value = 0;
 		try{
-	
 			bt = new BTConnector();
 			btc = bt.waitForConnection(waitingMs, NXTConnection.PACKET);
 			
@@ -302,14 +419,20 @@ public class Robot {
 		return value;
 	}
 	
-	
+	/**
+	 * Function receiveObject
+	 * @param waitingMs
+	 * @return Object
+	 * allows the robot to receive an object
+	 */
 	public Object receiveObject(int waitingMs) {
 		Object o = new Object();
 		try{	
+			// the robot waits for the other to connect
 			bt = new BTConnector();
 			btc = bt.waitForConnection(waitingMs, NXTConnection.PACKET);
 			
-			// si la connexion a été mise en place
+			//if the connection is made
 			if(btc != null){
 				FilterInputStream dis = null;
 				Object value = dis.read();
@@ -327,6 +450,11 @@ public class Robot {
 		return o;
 	}
 	
+	/**
+	 * Function goTo
+	 * @param c
+	 * @param b
+	 */
 	public void goTo(Color c, Board b) {
 		List<int[]> posOfC = (List<int[]>) b.getAllPosition(c);
 		int [] goal = this.findClosest(posOfC);
@@ -334,6 +462,11 @@ public class Robot {
 		this.folowPath(cells);
 	}
 	
+	/**
+	 * Function findClosest
+	 * @param pos
+	 * @return int[]
+	 */
 	private int[] findClosest(List<int[]> pos) {
 		if (!pos.isEmpty()) {
 			int[] closest = pos.get(0); 
@@ -350,6 +483,12 @@ public class Robot {
 		return null;	
 	}
 	
+	/**
+	 * Function findPath
+	 * @param finalPos
+	 * @param b
+	 * @return List<Node>
+	 */
 	private List<Node> findPath( int [] finalPos, Board b ) {
 		// vérifier la taille des tableaux 
 		// vérifier que c'est bien dans le tableau 
@@ -367,6 +506,14 @@ public class Robot {
         }
         return path;
 	}
+	
+	/**
+	 * Function findPath
+	 * @param finalPos
+	 * @param b
+	 * @param blocksArray
+	 * @return List<Node>
+	 */
 	public List<Node> findPath( int [] finalPos, Board b, int[][] blocksArray ) {
 		// vérifier la taille des tableaux 
 		// vérifier que c'est bien dans le tableau 
@@ -384,6 +531,10 @@ public class Robot {
         return path; 
 	}
 	
+	/**
+	 * Function folowPath
+	 * @param path
+	 */
 	public void folowPath (List<Node> path) {
 		for (Node node : path) {
             if ((this.x + 1 == node.getCol())  && this.y == node.getRow()) {
