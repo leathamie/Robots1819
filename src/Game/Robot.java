@@ -87,6 +87,10 @@ public class Robot {
 	 */
 	public void setFirstPlayer(boolean b) {
 		this.firstPlayer = b;
+		if (!this.firstPlayer) {
+			this.x = Parameters.BOARD_WIDTH - 1;
+			this.y = Parameters.BOARD_LENGTH - 1;
+		}
 	}
 	
 	/**
@@ -257,12 +261,13 @@ public class Robot {
         Motor.A.setSpeed(speed);
         Motor.C.setSpeed(speed);
         int angle = 0; 
+        pilot.travel(125);
         while(true){
             float [] sample = new float[sp.sampleSize()];
             sp.fetchSample(sample, 0);
             angle = (int)sample[0];
            
-            pilot.travel(125);
+            
             //je dois utiliser backward et forward des moteurs parce que sinon le robot va faire un arc de cercle
             //et en plus si je veux utiliser pilot je dois donner un angle donc il va s'en foutre de si il dépasse les 90 degres
             Motor.A.backward();
@@ -461,6 +466,13 @@ public class Robot {
 		List<Node> cells = findPath(goal, b);
 		this.folowPath(cells);
 	}
+	public void goToWithRobot2(Color c, Board b, ArrayList<Integer> RobotPosition ) {
+		List<int[]> posOfC = (List<int[]>) b.getAllPosition(c);
+		int [] goal = this.findClosest(posOfC);
+		int [][]  blocks = findOccupedCells(RobotPosition.get(0), RobotPosition.get(1), RobotPosition.get(2));
+		List<Node> cells = findPath(goal, b, blocks);
+		this.folowPath(cells);
+	}
 	
 	/**
 	 * Function findClosest
@@ -580,6 +592,61 @@ public class Robot {
 	        }
             
         }
+	}
+	
+	private int [][] findOccupedCells(int robotX, int robotY, int orientation) {
+		int[][] blocksArray = new int[6][2];
+		int i = 0;
+		if (orientation == Parameters.UP) {
+			for (int x = robotX ; x > x-Parameters.ROBOTCELLWIDTH ; x--){
+				if (x > 0 && x > Parameters.BOARD_WIDTH) {
+					for (int y = robotY ; y > y-Parameters.ROBOTCELLLENGTH ; y-- ) {
+						if (y > 0 && y > Parameters.BOARD_LENGTH) {
+							int [] cell = {x,y};
+							blocksArray[i] = cell;
+							i ++;
+						}
+					}
+				}
+			}
+		}else if (orientation == Parameters.DOWN) {
+			for (int x = robotX ; x < x+Parameters.ROBOTCELLWIDTH ; x++){
+				if (x > 0 && x > Parameters.BOARD_WIDTH) {
+					for (int y = robotY ; y < y+Parameters.ROBOTCELLLENGTH ; y++ ) {
+						if (y > 0 && y > Parameters.BOARD_LENGTH) {
+							int [] cell = {x,y};
+							blocksArray[i] = cell;
+							i ++;
+						}
+					}
+				}
+			}
+		}else if (orientation == Parameters.LEFT) {
+			for (int x = robotX ; x < x+Parameters.ROBOTCELLLENGTH ; x++){
+				if (x > 0 && x > Parameters.BOARD_WIDTH) {
+					for (int y = robotY ; y < y-Parameters.ROBOTCELLWIDTH ; y-- ) {
+						if (y > 0 && y > Parameters.BOARD_LENGTH) {
+							int [] cell = {x,y};
+							blocksArray[i] = cell;
+							i ++;
+						}
+					}
+				}
+			}
+		}else if (orientation == Parameters.RIGHT) {
+			for (int x = robotX ; x < x-Parameters.ROBOTCELLLENGTH ; x--){
+				if (x > 0 && x > Parameters.BOARD_WIDTH) {
+					for (int y = robotY ; y < y+Parameters.ROBOTCELLWIDTH ; y++ ) {
+						if (y > 0 && y > Parameters.BOARD_LENGTH) {
+							int [] cell = {x,y};
+							blocksArray[i] = cell;
+							i ++;
+						}
+					}
+				}
+			}
+		}
+		return blocksArray;
 	}
 	
 

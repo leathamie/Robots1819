@@ -29,5 +29,8 @@ public interface Parameters {
 
 	static final int WAITINGDURATION = 300;
 	
+	static final int ROBOTCELLWIDTH = 2;
+	static final int ROBOTCELLLENGTH = 3;
+	
 
 }

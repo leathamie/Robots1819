@@ -1,5 +1,8 @@
 package Behaviors;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 import com.jcraft.jsch.jce.Random;
 
 import Game.Board;
@@ -54,21 +57,33 @@ public class Play implements Behavior{
 			Color c = chooseRandomColor();
 			// it will send it via bluetooth
 			robot.sendObject(c); 
+			ArrayList<Integer> position = new ArrayList<Integer>();
+			position.add(robot.getX());
+			position.add(robot.getY());
+			position.add(robot.getDirection());
+			robot.sendObject(position);
 			// it is then its turn to wait to receive data
 			Color goalColor = (Color) robot.receiveObject(Parameters.WAITINGDURATION);
 			// once it receive the data, it just uses it to go where it is supposed to
-			this.robot.goTo(goalColor, twisterBoard);
+			ArrayList<Integer> goalPosition = (ArrayList<Integer>) robot.receiveObject(Parameters.WAITINGDURATION);
+			this.robot.goToWithRobot2(goalColor, twisterBoard, goalPosition);
 			
 		//if the robot isn't the first player	
 		}else {
 			// it just wait to receive some data
 			Color goalColor = (Color) robot.receiveObject(Parameters.WAITINGDURATION);
 			// one it receive it, it just goes where it is supposed to
-			this.robot.goTo(goalColor, twisterBoard);
+			ArrayList<Integer> goalPosition = (ArrayList<Integer>) robot.receiveObject(Parameters.WAITINGDURATION);
+			this.robot.goToWithRobot2(goalColor, twisterBoard, goalPosition);
 			// then it chooses a random color to send to the first player
 			Color c = chooseRandomColor();
 			// it simply send it using bluetooth
 			robot.sendObject(c); 
+			ArrayList<Integer> position = new ArrayList<Integer>();
+			position.add(robot.getX());
+			position.add(robot.getY());
+			position.add(robot.getDirection());
+			robot.sendObject(position);
 		}
 		
 	}
